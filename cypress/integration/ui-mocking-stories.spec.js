@@ -17,6 +17,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
     it('shows one less history after dimissing the first story', () => {
       cy.get('.button-small')
         .first()
+        .should('be.visible')
         .click()
 
       cy.get('.item').should('have.length', 1)
@@ -54,9 +55,11 @@ describe('Hacker Stories - UI (Mocking API)', () => {
 
         cy.get('.item')
           .first()
+          .should('be.visible')
           .should('contain', stories.hits[0].title)
 
         cy.get('@titleheader')
+          .should('be.visible')
           .click()
 
         cy.get('.item')
@@ -78,6 +81,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
           .should('contain', stories.hits[0].author)
 
         cy.get('@authorheader')
+          .should('be.visible')
           .click()
 
         cy.get('.item')
@@ -99,6 +103,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
           .should('contain', stories.hits[1].num_comments)
 
         cy.get('@commentsheader')
+          .should('be.visible')
           .click()
 
         cy.get('.item')
@@ -120,6 +125,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
           .should('contain', stories.hits[1].points)
 
         cy.get('@pointsheader')
+          .should('be.visible')
           .click()
 
         cy.get('.item')
@@ -140,6 +146,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
       cy.wait('@getstories')
 
       cy.get('#search')
+        .should('be.visible')
         .clear()
     })
 
@@ -149,6 +156,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
 
     it('types and hits ENTER', () => {
       cy.get('#search')
+        .should('be.visible')
         .type(`${newTerm}{enter}`)
 
       cy.wait('@getsearchstories')
@@ -165,6 +173,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
       cy.get('#search')
         .type(newTerm)
       cy.contains('Submit')
+        .should('be.visible')
         .click()
 
       cy.wait('@getsearchstories')
