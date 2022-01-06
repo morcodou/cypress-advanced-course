@@ -144,7 +144,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
     })
 
     it('shows no story when none is returned', () => {
-      cy.get('.item').should('not.exist');
+      cy.get('.item').should('not.exist')
     })
 
     it('types and hits ENTER', () => {
