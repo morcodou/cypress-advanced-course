@@ -2,10 +2,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
   const initialTerm = 'React'
   const newTerm = 'Cypress'
 
-
-
   context('List of stories', () => {
-
     beforeEach(() => {
       cy.intercept('GET', `**/search?query=${initialTerm}&page=0`, { fixture: 'stories' })
         .as('getstories')
@@ -24,15 +21,12 @@ describe('Hacker Stories - UI (Mocking API)', () => {
     })
   })
 
-
   context('Search', () => {
-
     beforeEach(() => {
-
       cy.intercept('GET', `**/search?query=${initialTerm}&page=0`, { hits: [] })
         .as('getstories')
       cy.intercept('GET', `**/search?query=${newTerm}&page=0`, { fixture: 'stories' })
-        .as('getsearchstories');
+        .as('getsearchstories')
 
       cy.visit('/')
       cy.wait('@getstories')
@@ -91,8 +85,5 @@ describe('Hacker Stories - UI (Mocking API)', () => {
           .should('have.length', 5)
       })
     })
-
   })
-
-
 })
