@@ -3,6 +3,8 @@ describe('Hacker Stories - UI (Mocking API)', () => {
   const newTerm = 'Cypress'
 
   context('List of stories', () => {
+    const stories = require('../fixtures/stories.json')
+
     beforeEach(() => {
       cy.intercept('GET', `**/search?query=${initialTerm}&page=0`, { fixture: 'stories' })
         .as('getstories')
@@ -20,11 +22,8 @@ describe('Hacker Stories - UI (Mocking API)', () => {
       cy.get('.item').should('have.length', 1)
     })
 
-    it.only('shows the right data for all rendered stories', () => {
-      const stories = require('../fixtures/stories.json')
-
-      cy.get('.item').as('items')
-      cy.get('@items')
+    it('shows the right data for all rendered stories', () => {
+      cy.get('.item')
         .first()
         .should('be.visible')
         .should('contain', stories.hits[0].title)
@@ -33,7 +32,7 @@ describe('Hacker Stories - UI (Mocking API)', () => {
       cy.get(`.item a:contains(${stories.hits[0].title})`)
         .should('have.attr', 'href', stories.hits[0].url)
 
-      cy.get('@items')
+      cy.get('.item')
         .last()
         .should('be.visible')
         .should('contain', stories.hits[1].title)
@@ -41,6 +40,92 @@ describe('Hacker Stories - UI (Mocking API)', () => {
         .and('contain', stories.hits[1].num_comments)
       cy.get(`.item a:contains(${stories.hits[1].title})`)
         .should('have.attr', 'href', stories.hits[1].url)
+    })
+
+    context('Order by', () => {
+      it('orders by title', () => {
+        cy.get('.list-header-button')
+          .contains('Title')
+          .as('titleheader')
+
+        cy.get('@titleheader')
+          .should('be.visible')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[0].title)
+
+        cy.get('@titleheader')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[1].title)
+      })
+
+      it('orders by author', () => {
+        cy.get('.list-header-button')
+          .contains('Author')
+          .as('authorheader')
+
+        cy.get('@authorheader')
+          .should('be.visible')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[0].author)
+
+        cy.get('@authorheader')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[1].author)
+      })
+
+      it('orders by comments', () => {
+        cy.get('.list-header-button')
+          .contains('Comments')
+          .as('commentsheader')
+
+        cy.get('@commentsheader')
+          .should('be.visible')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[1].num_comments)
+
+        cy.get('@commentsheader')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[0].num_comments)
+      })
+
+      it('orders by points', () => {
+        cy.get('.list-header-button')
+          .contains('Points')
+          .as('pointsheader')
+
+        cy.get('@pointsheader')
+          .should('be.visible')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[1].points)
+
+        cy.get('@pointsheader')
+          .click()
+
+        cy.get('.item')
+          .first()
+          .should('contain', stories.hits[0].points)
+      })
     })
   })
 
