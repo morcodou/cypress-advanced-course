@@ -19,6 +19,29 @@ describe('Hacker Stories - UI (Mocking API)', () => {
 
       cy.get('.item').should('have.length', 1)
     })
+
+    it.only('shows the right data for all rendered stories', () => {
+      const stories = require('../fixtures/stories.json')
+
+      cy.get('.item').as('items')
+      cy.get('@items')
+        .first()
+        .should('be.visible')
+        .should('contain', stories.hits[0].title)
+        .and('contain', stories.hits[0].author)
+        .and('contain', stories.hits[0].num_comments)
+      cy.get(`.item a:contains(${stories.hits[0].title})`)
+        .should('have.attr', 'href', stories.hits[0].url)
+
+      cy.get('@items')
+        .last()
+        .should('be.visible')
+        .should('contain', stories.hits[1].title)
+        .and('contain', stories.hits[1].author)
+        .and('contain', stories.hits[1].num_comments)
+      cy.get(`.item a:contains(${stories.hits[1].title})`)
+        .should('have.attr', 'href', stories.hits[1].url)
+    })
   })
 
   context('Search', () => {
