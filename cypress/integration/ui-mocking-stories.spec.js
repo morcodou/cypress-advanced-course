@@ -202,8 +202,15 @@ describe('Hacker Stories - UI (Mocking API)', () => {
 
         // cy.wait('@getrandomstories')
 
-        cy.get('.last-searches button')
-          .should('have.length', 5)
+        // cy.get('.last-searches button')
+        //   .should('have.length', 5)
+
+        cy.get('.last-searches')
+          .within(() => {
+            cy.get('button')
+              .should('be.visible')
+              .and('have.length', 5)
+          })
       })
     })
   })
