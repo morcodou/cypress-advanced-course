@@ -65,15 +65,6 @@ describe('Hacker Stories', () => {
 
       it('orders by points', () => { })
     })
-
-    // Hrm, how would I simulate such errors?
-    // Since I still don't know, the tests are being skipped.
-    // TODO: Find a way to test them out.
-    context.skip('Errors', () => {
-      it('shows "Something went wrong ..." in case of a server error', () => { })
-
-      it('shows "Something went wrong ..." in case of a network error', () => { })
-    })
   })
 
   context('Search', () => {
@@ -127,6 +118,8 @@ describe('Hacker Stories', () => {
     })
 
     it('types and submits the form directly', () => {
+      // search
+      // cy.get('form input[id="search"]')
       cy.get('form input[type="text"]')
         .should('be.visible')
         .clear()
@@ -183,5 +176,45 @@ describe('Hacker Stories', () => {
           .should('have.length', 5)
       })
     })
+  })
+
+})
+
+
+context('Errors', () => {
+  it('shows "Something went wrong ..." in case of a server error', () => {
+    cy.intercept(
+      'GET',
+      '**/search?query=**',
+      {
+        statusCode: 500
+      }
+    ).as('servererror');
+
+    cy.visit('/');
+
+    cy.wait('@servererror');
+
+    cy.get('p:contains(Something went wrong ...)')
+      .should('be.visible');
+    cy.get('.item').should('have.length', 0)
+  })
+
+  it('shows "Something went wrong ..." in case of a network error', () => {
+    cy.intercept(
+      'GET',
+      '**/search?query=**',
+      {
+        forceNetworkError: true
+      }
+    ).as('networkerror');
+
+    cy.visit('/');
+
+    cy.wait('@networkerror');
+
+    cy.get('p:contains(Something went wrong ...)')
+      .should('be.visible');
+    cy.get('.item').should('have.length', 0);
   })
 })
