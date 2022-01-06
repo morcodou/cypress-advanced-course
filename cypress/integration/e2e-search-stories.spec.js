@@ -43,11 +43,16 @@ describe('Hacker Stories - E2E (API)', () => {
 
         cy.wait('@getsearchstories')
 
+        cy.getLocalStorage('search')
+          .should('equal', newTerm)
+
         cy.get(`button:contains(${initialTerm})`)
           .should('be.visible')
           .click()
 
         cy.wait('@getstories')
+        cy.getLocalStorage('search')
+          .should('equal', initialTerm)
 
         cy.get('.item').should('have.length', 20)
         cy.get('.item')

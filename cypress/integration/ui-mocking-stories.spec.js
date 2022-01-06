@@ -160,6 +160,8 @@ describe('Hacker Stories - UI (Mocking API)', () => {
         .type(`${newTerm}{enter}`)
 
       cy.wait('@getsearchstories')
+      cy.getLocalStorage('search')
+        .should('equal', newTerm)
 
       cy.get('.item').should('have.length', 2)
       cy.get('.item')
@@ -178,6 +180,9 @@ describe('Hacker Stories - UI (Mocking API)', () => {
 
       cy.wait('@getsearchstories')
 
+      cy.getLocalStorage('search')
+        .should('equal', newTerm)
+
       cy.get('.item').should('have.length', 2)
       cy.get('.item')
         .first()
@@ -194,10 +199,14 @@ describe('Hacker Stories - UI (Mocking API)', () => {
           .as('getrandomstories')
 
         Cypress._.times(6, () => {
+          const randomSearch = faker.random.word()
           cy.get('#search')
             .clear()
-            .type(`${faker.random.word()}{enter}`)
+            .type(`${randomSearch}{enter}`)
           cy.wait('@getrandomstories')
+
+          cy.getLocalStorage('search')
+            .should('equal', randomSearch)
         })
 
         // cy.wait('@getrandomstories')
