@@ -10,10 +10,10 @@ describe('Hacker Stories', () => {
         query: 'React',
         page: '0'
       }
-    }).as('getstories');
+    }).as('getstories')
 
-    cy.visit('/');
-    cy.wait('@getstories');
+    cy.visit('/')
+    cy.wait('@getstories')
   })
 
   it('shows the footer', () => {
@@ -29,14 +29,6 @@ describe('Hacker Stories', () => {
     // This is why this test is being skipped.
     // TODO: Find a way to test it out.
     it.skip('shows the right data for all rendered stories', () => { })
-
-    it('shows only nineteen stories after dimissing the first story', () => {
-      cy.get('.button-small')
-        .first()
-        .click()
-
-      cy.get('.item').should('have.length', 19)
-    })
 
     // Since the API is external,
     // I can't control what it will provide to the frontend,
@@ -59,20 +51,18 @@ describe('Hacker Stories', () => {
     const newTerm = 'Cypress'
 
     beforeEach(() => {
-
       cy.intercept('GET', `**/search?query=${newTerm}&page=0`)
-        .as('getsearchstories');
+        .as('getsearchstories')
 
       cy.get('#search')
         .clear()
     })
 
     it('types and hits ENTER', () => {
-
       cy.get('#search')
         .type(`${newTerm}{enter}`)
 
-      cy.wait('@getsearchstories');
+      cy.wait('@getsearchstories')
 
       cy.get('.item').should('have.length', 20)
       cy.get('.item')
@@ -94,7 +84,7 @@ describe('Hacker Stories', () => {
       //   .type(newTerm)
       // cy.get('form').submit()
 
-      cy.wait('@getsearchstories');
+      cy.wait('@getsearchstories')
 
       cy.get('.item').should('have.length', 20)
       cy.get('.item')
@@ -113,7 +103,7 @@ describe('Hacker Stories', () => {
         .type(newTerm)
       cy.get('form').submit()
 
-      cy.wait('@getsearchstories');
+      cy.wait('@getsearchstories')
 
       cy.get('.item').should('have.length', 20)
       cy.get('.item')
@@ -124,17 +114,16 @@ describe('Hacker Stories', () => {
     })
 
     context('Last searches', () => {
-
       it('shows a max of 5 buttons for the last searched terms', () => {
         const faker = require('faker')
 
-        cy.intercept('GET', `**/search?query=**`)
-          .as('getrandomstories');
+        cy.intercept('GET', '**/search?query=**')
+          .as('getrandomstories')
 
         Cypress._.times(6, () => {
           cy.get('#search')
             .clear()
-            .type(`${faker.random.word()}{enter}`);
+            .type(`${faker.random.word()}{enter}`)
           cy.wait('@getrandomstories')
         })
 
@@ -145,5 +134,4 @@ describe('Hacker Stories', () => {
       })
     })
   })
-
 })

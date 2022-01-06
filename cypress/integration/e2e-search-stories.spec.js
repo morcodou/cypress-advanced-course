@@ -1,5 +1,4 @@
 describe('Hacker Stories - E2E (API)', () => {
-
   const initialTerm = 'React'
   const newTerm = 'Cypress'
 
@@ -11,22 +10,22 @@ describe('Hacker Stories - E2E (API)', () => {
         query: 'React',
         page: '0'
       }
-    }).as('getstories');
+    }).as('getstories')
 
-    cy.visit('/');
-    cy.wait('@getstories');
+    cy.visit('/')
+    cy.wait('@getstories')
   })
 
   context('List of stories', () => {
     it('shows 20 stories, then the next 20 after clicking "More"', () => {
       cy.intercept('GET', '**/search?query=React&page=1')
-        .as('getmorestories');
+        .as('getmorestories')
 
       cy.get('.item').should('have.length', 20)
 
       cy.contains('More').click()
 
-      cy.wait('@getmorestories');
+      cy.wait('@getmorestories')
 
       cy.get('.item').should('have.length', 40)
     })
@@ -35,21 +34,20 @@ describe('Hacker Stories - E2E (API)', () => {
   context('Search', () => {
     context('Last searches', () => {
       it('searches via the last searched term', () => {
-
         cy.intercept('GET', `**/search?query=${newTerm}&page=0`)
-          .as('getsearchstories');
+          .as('getsearchstories')
 
         cy.get('#search')
           .clear()
           .type(`${newTerm}{enter}`)
 
-        cy.wait('@getsearchstories');
+        cy.wait('@getsearchstories')
 
         cy.get(`button:contains(${initialTerm})`)
           .should('be.visible')
           .click()
 
-        cy.wait('@getstories');
+        cy.wait('@getstories')
 
         cy.get('.item').should('have.length', 20)
         cy.get('.item')

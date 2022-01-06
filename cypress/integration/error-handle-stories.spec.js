@@ -1,5 +1,4 @@
 describe('Hacker Stories Errors', () => {
-
   it('shows "Something went wrong ..." in case of a server error', () => {
     cy.intercept(
       'GET',
@@ -7,14 +6,14 @@ describe('Hacker Stories Errors', () => {
       {
         statusCode: 500
       }
-    ).as('servererror');
+    ).as('servererror')
 
-    cy.visit('/');
+    cy.visit('/')
 
-    cy.wait('@servererror');
+    cy.wait('@servererror')
 
     cy.get('p:contains(Something went wrong ...)')
-      .should('be.visible');
+      .should('be.visible')
     cy.get('.item').should('have.length', 0)
   })
 
@@ -25,15 +24,14 @@ describe('Hacker Stories Errors', () => {
       {
         forceNetworkError: true
       }
-    ).as('networkerror');
+    ).as('networkerror')
 
-    cy.visit('/');
+    cy.visit('/')
 
-    cy.wait('@networkerror');
+    cy.wait('@networkerror')
 
     cy.get('p:contains(Something went wrong ...)')
-      .should('be.visible');
-    cy.get('.item').should('have.length', 0);
+      .should('be.visible')
+    cy.get('.item').should('have.length', 0)
   })
-  
 })
