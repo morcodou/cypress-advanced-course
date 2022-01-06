@@ -143,6 +143,10 @@ describe('Hacker Stories - UI (Mocking API)', () => {
         .clear()
     })
 
+    it('shows no story when none is returned', () => {
+      cy.get('.item').should('not.exist');
+    })
+
     it('types and hits ENTER', () => {
       cy.get('#search')
         .type(`${newTerm}{enter}`)
